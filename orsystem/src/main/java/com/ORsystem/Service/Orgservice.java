@@ -1,7 +1,9 @@
 package com.ORsystem.Service;
 
+import com.ORsystem.Model.Depclass;
 import com.ORsystem.Model.Orgmodel;
 import com.ORsystem.ORgdto.ORgdto;
+import com.ORsystem.Repository.DepRepository;
 import com.ORsystem.Repository.OrgRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import java.util.stream.Collectors;
 public class Orgservice {
     @Autowired
     private OrgRepository oRgRepository;
+    @Autowired
+    private DepRepository depRepository;
 
 
     public Orgservice(OrgRepository oRgRepository) {
@@ -28,6 +32,9 @@ public class Orgservice {
         org.setMission(oRgdto.getMission());
         org.setVission(oRgdto.getVission());
         org.setLogo(oRgdto.getLogo());
+        if (oRgdto.getDepartments() != null) {
+            org.setDepartments(oRgdto.getDepartments());
+        }
 
         Orgmodel savedOrg = oRgRepository.save(org);
         return new ORgdto(
@@ -38,7 +45,8 @@ public class Orgservice {
                 savedOrg.getLogo(),
                 savedOrg.getStablishedyear(),
                 savedOrg.getMission(),
-                savedOrg.getVission()
+                savedOrg.getVission(),
+                savedOrg.getDepartments()
         );
     }
 
@@ -52,7 +60,8 @@ public class Orgservice {
                 org.getLogo(),
                 org.getStablishedyear(),
                 org.getMission(),
-                org.getVission()
+                org.getVission(),
+                org.getDepartments()
         )).collect(Collectors.toList());
     }
     public ORgdto updateorganization(ORgdto oRgdto ) {
@@ -85,7 +94,8 @@ public class Orgservice {
                 savedOrg1.getVission(),
                 savedOrg1.getMission(),
                 savedOrg1.getStablishedyear(),
-                savedOrg1.getLogo()
+                savedOrg1.getLogo(),
+                savedOrg1.getDepartments()
         );
 
 
@@ -100,8 +110,33 @@ public class Orgservice {
                 org.getLogo(),
                 org.getStablishedyear(),
                 org.getMission(),
-                org.getVission()
+                org.getVission(),
+                org.getDepartments()
         ));
+    }
+    public Depclass addDepartmentToOrganization(Long orgId, Depclass depclass) {
+        Optional<Orgmodel> orgOptional = oRgRepository.findById(orgId);
+
+        if (orgOptional.isPresent()) {
+            Orgmodel organization = orgOptional.get();
+            depclass = depRepository.save(depclass);  // Save department first
+            organization.getDepartments().add(depclass);  // Add department to the list
+            oRgRepository.save(organization);  // Save the updated organization
+            return depclass;
+        } else {
+            throw new RuntimeException("Organization not found");
+        }
+    }
+
+    // Method to delete a department
+    public boolean deleteDepartment(Long depId) {
+        Optional<Depclass> depOptional = depRepository.findById(depId);
+        if (depOptional.isPresent()) {
+            depRepository.deleteById(depId);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

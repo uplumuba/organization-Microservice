@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.GenerationType;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +27,10 @@ public class Orgmodel {
     private String stablishedyear;
     private String mission;
     private String vission;
+    
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "fk_id", referencedColumnName = "id")
+    private List<Depclass> departments;
 
 
 

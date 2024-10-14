@@ -1,10 +1,12 @@
 package com.ORsystem.ORgdto;
 
+import com.ORsystem.Model.Depclass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.List;
 
 
 @Data
@@ -21,6 +23,7 @@ public class ORgdto {
     private String stablishedyear;
     private String mission;
     private String vission;
+    private List<Depclass> departments;
 
 
 }

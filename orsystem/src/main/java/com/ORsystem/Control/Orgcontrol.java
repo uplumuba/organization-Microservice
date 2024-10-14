@@ -1,6 +1,8 @@
 package com.ORsystem.Control;
 
+import com.ORsystem.Model.Depclass;
 import com.ORsystem.ORgdto.ORgdto;
+import com.ORsystem.Service.Depservice;
 import com.ORsystem.Service.Orgservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,8 @@ public class Orgcontrol {
 
     @Autowired
     private Orgservice orgService;
+    @Autowired
+    private Depservice depservice;
 
 
     @PostMapping
@@ -28,6 +32,13 @@ public class Orgcontrol {
         ORgdto updatedOrg = orgService.updateorganization(oRgdto);
         return ResponseEntity.ok(updatedOrg);
     }
+    @PostMapping("/{orgId}/departments")
+    public ResponseEntity<?> addDepartment(@PathVariable Long orgId, @RequestBody Depclass depclass) {
+        Depclass addedDepartment = orgService.addDepartmentToOrganization(orgId, depclass);
+        return ResponseEntity.ok(addedDepartment);
+    }
+
+
 
 
     @GetMapping
