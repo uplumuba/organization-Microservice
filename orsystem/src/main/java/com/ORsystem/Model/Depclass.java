@@ -7,11 +7,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "departments")
-@Data
-@AllArgsConstructor
+
+
 public class Depclass {  // Model name remains Depclass
 
     @Id
@@ -21,6 +25,4 @@ public class Depclass {  // Model name remains Depclass
     private String location;
     private String abbreviatedName;
 
-    public Depclass() {
-    }
 }

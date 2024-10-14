@@ -19,8 +19,14 @@ public class Orgcontrol {
 
     @PostMapping
     public ResponseEntity<ORgdto> createOrganization(@RequestBody ORgdto orgdto) {
-        ORgdto createdOrg = orgService.createUser(orgdto);
+        ORgdto createdOrg = orgService.createorganization(orgdto);
         return new ResponseEntity<>(createdOrg, HttpStatus.CREATED);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<ORgdto> updateOrganization(@PathVariable("id") long id, @RequestBody ORgdto oRgdto) {
+        oRgdto.setId(id);
+        ORgdto updatedOrg = orgService.updateorganization(oRgdto);
+        return ResponseEntity.ok(updatedOrg);
     }
 
 

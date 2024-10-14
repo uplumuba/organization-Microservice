@@ -20,7 +20,7 @@ public class Orgservice {
         this.oRgRepository = oRgRepository;
     }
 
-    public ORgdto createUser(ORgdto oRgdto) {
+    public ORgdto createorganization(ORgdto oRgdto) {
         Orgmodel org = new Orgmodel();
         org.setName(oRgdto.getName());
         org.setAbrivatedname(oRgdto.getAbrivatedname());
@@ -31,6 +31,8 @@ public class Orgservice {
 
         Orgmodel savedOrg = oRgRepository.save(org);
         return new ORgdto(
+                savedOrg.getId(),
+
                 savedOrg.getAbrivatedname(),
                 savedOrg.getName(),
                 savedOrg.getLogo(),
@@ -44,6 +46,7 @@ public class Orgservice {
     public List<ORgdto> getAllOrganizations() {
         List<Orgmodel> orgList = oRgRepository.findAll();
         return orgList.stream().map(org -> new ORgdto(
+                org.getId(),
                 org.getAbrivatedname(),
                 org.getName(),
                 org.getLogo(),
@@ -52,10 +55,46 @@ public class Orgservice {
                 org.getVission()
         )).collect(Collectors.toList());
     }
+    public ORgdto updateorganization(ORgdto oRgdto ) {
+        Optional<Orgmodel> org = oRgRepository.findById(oRgdto.getId());
+        Orgmodel savedOrg = org.get();
+        if(oRgdto.getAbrivatedname() != null) {
+            savedOrg.setAbrivatedname(oRgdto.getAbrivatedname());
+        }
+        if(oRgdto.getName() != null) {
+            savedOrg.setName(oRgdto.getName());
+
+        }
+        if(oRgdto.getLogo() != null) {
+            savedOrg.setLogo(oRgdto.getLogo());
+        }
+        if(oRgdto.getStablishedyear() != null) {
+            savedOrg.setStablishedyear(oRgdto.getStablishedyear());
+        }
+        if(oRgdto.getMission() != null) {
+            savedOrg.setMission(oRgdto.getMission());
+        }
+        if(oRgdto.getVission() != null) {
+            savedOrg.setVission(oRgdto.getVission());
+        }
+        Orgmodel savedOrg1 = oRgRepository.save(savedOrg);
+        return new ORgdto(
+                savedOrg1.getId(),
+                savedOrg1.getName(),
+                savedOrg1.getAbrivatedname(),
+                savedOrg1.getVission(),
+                savedOrg1.getMission(),
+                savedOrg1.getStablishedyear(),
+                savedOrg1.getLogo()
+        );
+
+
+    }
 
     public Optional<ORgdto> getOrganizationById(Long id) {
         Optional<Orgmodel> orgOptional = oRgRepository.findById(id);
         return orgOptional.map(org -> new ORgdto(
+                org.getId(),
                 org.getAbrivatedname(),
                 org.getName(),
                 org.getLogo(),
@@ -64,6 +103,7 @@ public class Orgservice {
                 org.getVission()
         ));
     }
+
 
 
     public boolean deleteOrganization(Long id) {

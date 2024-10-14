@@ -20,7 +20,11 @@ public class DepControl {
     public Depdto getDepartmentById(@PathVariable Long id) {
         return depservice.getDepartmentById(id);
     }
-
+@PutMapping("/{id}")
+public Depdto updateDepartment(@PathVariable Long id, @RequestBody Depdto dto) {
+        dto.setId(id);
+        return depservice.updateDepartment(dto);
+}
     @PostMapping
     public Depdto addDepartment(@RequestBody Depdto departmentDTO) {
         return depservice.addDepartment(departmentDTO);

@@ -23,6 +23,29 @@ public class Depservice {
         Depclass dept = departmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Department not found"));
         return new Depdto(dept.getId(), dept.getName(), dept.getLocation(), dept.getAbbreviatedName());
     }
+    public Depdto updateDepartment(Depdto dep) {
+        Depclass dept = departmentRepository.findById(dep.getId()).get();
+        if(dep.getAbbreviatedName() != null) {
+            dept.setAbbreviatedName(dep.getAbbreviatedName());
+        }
+        if (dep.getLocation()!= null) {
+           dept.setLocation(dep.getLocation());
+        }
+        if (dep.getName()!= null) {
+            dept.setName(dep.getName());
+        }
+        Depclass updateddata=departmentRepository.save(dept);
+        return new Depdto(
+                updateddata.getId(),
+                updateddata.getName(),
+                updateddata.getAbbreviatedName(),
+                updateddata.getLocation()
+        );
+
+
+
+
+    }
 
     public Depdto addDepartment(Depdto departmentDTO) {
         Depclass dept = new Depclass();
